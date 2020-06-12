@@ -1,2 +1,24 @@
-# race4battler
-Race for battlers and weapon/skills efficiency for specific opponents
+# Race for Battler
+任意歩数ごとのアクターへの各種効果を与えるステート・装備
+
+by 蒼竜 @soryu_rpmakermv
+
+-------------------------------------------------
+
+<br>
+
+## 1. はじめに
+
+
+## 2. 使い方
+### 2.1. プラグインパラメータ設定（種族定義）
+
+### 2.2. データベース設定（アクター、スキル等への種族適用）
+
+
+### 2.3. 記述例
+
+## 3.  競合・実装情報
+
+
+### バージョン情報

@@ -113,4 +113,4 @@ Race_KillerタグやKiller_Resistタグは重複します。<br>
 
 
 ### バージョン情報
- - ver 1.00  (Jun 12, 2020)   公開
+ - ver 1.00  (Jun 13, 2020)   公開

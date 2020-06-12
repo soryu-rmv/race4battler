@@ -82,10 +82,10 @@ RPGツクールの標準機能に、スキルやキャラクターの「属性�
 
 
 - Race_Killerタグによる特効を無効化<br>
-<Killer_Resist>
+```<Killer_Resist>```
 
 - 人間種族から受けるダメージ-20%<br>
-<Killer_Resist: 人間, 20>
+```<Killer_Resist: 人間, 20>```
 
 
 ### 2.4. 仕様

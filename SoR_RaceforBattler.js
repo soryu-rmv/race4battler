@@ -22,7 +22,8 @@
  *    ※ 種族名: 1.で定義した種族名(存在しないものを指定すると無視されます)
  * 3. スキルや装備に種族特効をする次のタグを挿入します。
  *    <Race_Killer: 種族名(, 数値)>
- *    ※ 数値（省略可能）は、ダメージを増幅させる割合(%)を指定してください。
+ *    ※ 数値（省略可能、タグ内()は省略可能部分を示す意味で "獣(, 30)>" のように入力をするものではありません）は、
+ *       ダメージを増幅させる割合(%)を指定してください。
  *       省略すると、プラグインパラメータ"Effective Rate"の値が採用されます(デフォルト+100%)。
  *    ※ バトラーにも定義可能です。バトラーに定義すれば、常に特定種族に強いバトラーとしてキャラクターを作成できます。
  * 4. 次のタグを挿入すると、特定種族からのダメージを軽減させることができます。
@@ -143,6 +144,7 @@
  * 3. Insert the following tag in the note for skills or equipments to define the special effect for specific races.
  *    <Race_Killer: RACENAME(, VALUE)>
  *    + VALUE(omittable) is a rate(%) to increase the damage. 
+ *       !!!!warning!!!! (, VALUE) in tag just shows the omittable part. Do not input as "Beast(, 30)>".
  *       If <Race_Killer: Beast, 50>, the damage for beasts are increased by 50%. 
  *       When you just write <Race_Killer: RACENAME>, the default percentage ("Effective Rate" in a plugin parameters).
  *    +  This tag also can be used for battlers who always have advantage for specific races.
@@ -528,7 +530,7 @@ function getRace_KillerResistTags(DM) {
 					rate: Race_Killer_Rate
 			};
 			
-			if(RegExp.$2) resists.rate = ParseInt(RegExp.$2);		
+			if(RegExp.$2) resists.rate = parseInt(RegExp.$2);		
 			obj._killer_resists.push(resists);
 		  }
       }

@@ -97,8 +97,11 @@ Race_KillerタグやKiller_Resistタグは重複します。<br>
 獣種族に与えるダメージは+60%となります。
 
 ## 3. 実行例
+虫特効スキルを、虫（ハチ）に使用したデモ。<br>
+視認用に特効ダメージを１００倍にしている。<br>
 
-https://www.youtube.com/watch?v=puD0-RcSO3Q&feature=youtu.be
+[![](https://img.youtube.com/vi/puD0-RcSO3Q/0.jpg)](https://www.youtube.com/watch?v=puD0-RcSO3Q)
+
 
 ## 4. 実装（競合）情報<br>
 上書き定義なし<br>

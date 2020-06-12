@@ -86,10 +86,10 @@ Then, no weapon/skill efficiency effects from opponents are applied.<br>
 
 
 - Disable all effects of opponents by Race_Killer<br>
-<Killer_Resist>
+```<Killer_Resist>```
 
 - Decrease the damage from Human by 20%<br>
-<Killer_Resist: Human, 20>
+```<Killer_Resist: Human, 20>```
 
 
 ### 2.4. Note

@@ -98,7 +98,7 @@ Race_KillerタグやKiller_Resistタグは重複します。<br>
 
 ## 3. 実行例
 虫特効スキルを、虫（ハチ）に使用したデモ。<br>
-視認用に特効ダメージを１００倍にしている。<br>
+視認用に特効ダメージを１００倍にしている。(画像クリックでyoutube動画へリンク)
 
 [![](https://img.youtube.com/vi/puD0-RcSO3Q/0.jpg)](https://www.youtube.com/watch?v=puD0-RcSO3Q)
 

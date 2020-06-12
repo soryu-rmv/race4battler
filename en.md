@@ -51,7 +51,7 @@ put following tags into the note for the specific skills or equipments.<br>
 - VALUE(omittable) is a rate(%) to increase the damage. <br>
   If <Race_Killer: Beast, 50>, the damage for beasts are increased by 50%. <br>
 
-- When you just write <Race_Killer: RACENAME>, the default percentage ("Effective Rate" in a plugin parameters).
+- When you just write <Race_Killer: RACENAME>, the default percentage ("Effective Rate" in a plugin parameters).<br>
   This tag also can be used for battlers who always have advantage for specific races.
  
  
@@ -71,7 +71,7 @@ Just write
 ```<Killer_Resist>```
 
 to disable all special damage dealt.<br>
-Then, no weapon/skill efficiency effects from opponents are applied.
+Then, no weapon/skill efficiency effects from opponents are applied.<br>
 
 
 ### 2.3. Examples

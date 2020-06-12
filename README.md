@@ -1,5 +1,5 @@
 # Race for Battler
-任意歩数ごとのアクターへの各種効果を与えるステート・装備
+バトラー種族定義（＆対種族特効・耐性設定）
 
 by 蒼竜 @soryu_rpmakermv
 

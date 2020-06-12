@@ -104,7 +104,10 @@ The total damage increase to Beast is **60%**(20+20+20). <br>
 
 ## 3. Demonstartion
 Using a skill which is effective for insects targeting on Bees.<br>
-For visiblity, the damage rate is set as **100x**. (Click the thumbnail to check the movie in youtube.)
+For visiblity, the damage rate is set as **100x**. (Click the thumbnail to check the movie in youtube.)<br>
+
+Because the tag is set only for the skill, other actions like normal attack is not affected.<br>
+(The damage of normal attakcs is not 100x.)
 
 [![](https://img.youtube.com/vi/puD0-RcSO3Q/0.jpg)](https://www.youtube.com/watch?v=puD0-RcSO3Q)
 

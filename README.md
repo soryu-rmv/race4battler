@@ -96,7 +96,11 @@ Race_KillerタグやKiller_Resistタグは重複します。<br>
 <Race_Killer: 獣, 20)> のタグを３つついた状態（例えばアクター、スキル、武器）だと、<br>
 獣種族に与えるダメージは+60%となります。
 
-## 3. 実装（競合）情報<br>
+## 3. 実行例
+
+https://www.youtube.com/watch?v=puD0-RcSO3Q&feature=youtu.be
+
+## 4. 実装（競合）情報<br>
 上書き定義なし<br>
 
 - **BattleManager.startAction** より処理派生<br>

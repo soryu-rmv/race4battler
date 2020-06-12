@@ -67,17 +67,17 @@ RPGツクールの標準機能に、スキルやキャラクターの「属性�
 ## 3. 実装（競合）情報<br>
 上書き定義なし<br>
 
-- **BattleManager.startAction** より処理派生
--- 特効・耐性タグ読み取り
+- **BattleManager.startAction** より処理派生<br>
+-- 特効・耐性タグ読み取り<br>
 
-- **Game_Action.prototype.executeDamage** より処理派生
--- SoR_ComboCounter.js (2020/06/12時点非公開)より下
+- **Game_Action.prototype.executeDamage** より処理派生<br>
+-- SoR_ComboCounter.js (2020/06/12時点非公開)より下<br>
 
-- **DataManager.isDatabaseLoaded**  より処理派生
--- タグ読み取り用
+- **DataManager.isDatabaseLoaded**  より処理派生<br>
+-- タグ読み取り用<br>
 
-- **Game_Enemy.prototype.setup** および **Game_Actor.prototype.setup** より処理派生
--- 種族定義用
+- **Game_Enemy.prototype.setup** および **Game_Actor.prototype.setup** より処理派生<br>
+-- 種族定義用<br>
 
 
 ### バージョン情報

@@ -81,7 +81,7 @@ Then, no weapon/skill efficiency effects from opponents are applied.<br>
 - Special effect to the Beasts (200% damages in default)<br>
 ```<Race_Killer: Beast>```<br>
 
-- Increase the damage for Beast opponents by 20% (Totally x1.2 damages)<br>
+- Increase the damage for Beast opponents by 20% (Totally 1.2x damages)<br>
 ```<Race_Killer: Beast, 20>```<br>
 
 
@@ -102,7 +102,14 @@ For example, assume the subject has **three <Race_Killer: Beast, 20)> tags** (i.
 The total damage increase to Beast is **60%**(20+20+20). <br>
 
 
-## 3. Implementation (Information for Possible Conflict to other plugins)<br>
+## 3. Demonstartion
+Using a skill which is effective for insects targeting on Bees.<br>
+For visiblity, the damage rate is set as **100x**. (Click the thumbnail to check the movie in youtube.)
+
+[![](https://img.youtube.com/vi/puD0-RcSO3Q/0.jpg)](https://www.youtube.com/watch?v=puD0-RcSO3Q)
+
+
+## 4. Implementation (Information for Possible Conflict to other plugins)<br>
 No overwritten functions.<br>
 
 - Branched from **BattleManager.startAction**<br>

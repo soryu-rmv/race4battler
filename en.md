@@ -33,18 +33,18 @@ you have to initialize the game (Start as NewGame) to work properly.<br>
 #### 2.2.1 Race settings
 
 To assign races for battlers (actors and enemies),<br>
-put following tags into the note for the specific battler.
+put following tags into the note for the specific battler.<br>
  
  ```<Race: RACENAME>```<br>
 
-RACENAME must be **a name defined in 2.1. (plugin parameters settings)**.
-If the RACENAME is not appropriate, that tag is **ignored**.
+RACENAME must be **a name defined in 2.1. (plugin parameters settings)**.<br>
+If the RACENAME is not appropriate, that tag is **ignored**.<br>
 
  
 #### 2.2.2 Effective settings
 
 To make special effect for specific races,<br>
-put following tags into the note for the specific skills or equipments.
+put following tags into the note for the specific skills or equipments.<br>
 
 ```<Race_Killer: RACENAME(, VALUE)>```<br>
  

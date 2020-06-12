@@ -75,45 +75,47 @@ Then, no weapon/skill efficiency effects from opponents are applied.
 
 
 ### 2.3. Examples
-- タグがつけられたアクター（エネミー）を竜種族扱いする<br>
-```<Race_Killer: 竜>```<br>
+- Treat the specified battler as a Dragon<br>
+```<Race_Killer: Dragon>```<br>
 
-- 獣種族に+100%ダメージ(デフォルト)特効<br>
-```<Race_Killer: 獣>```<br>
+- Special effect to the Beasts (200% damages in default)<br>
+```<Race_Killer: Beast>```<br>
 
-- 獣種族に与えるダメージ+20% (合計1.2倍)<br>
-```<Race_Killer: 獣, 20>```<br>
+- Increase the damage for Beast opponents by 20% (Totally x1.2 damages)<br>
+```<Race_Killer: Beast, 20>```<br>
 
 
-- Race_Killerタグによる特効を無効化<br>
+- Disable all effects of opponents by Race_Killer<br>
 <Killer_Resist>
 
-- 人間種族から受けるダメージ-20%<br>
-<Killer_Resist: 人間, 20>
+- Decrease the damage from Human by 20%<br>
+<Killer_Resist: Human, 20>
 
 
 ### 2.4. Note
 
-Race_KillerタグやKiller_Resistタグは重複します。<br>
-行動開始時点で、行動主体と、対象のタグを収集し、総和を取っているため、<br>
+<Race_Killer> and <Killer_Resist> are compatible.<br>
+Before starting an action, tags assigned in a subject of the action and targets are collected.<br>
+Damage rate in each tag is dealt by taking **summation**.
 
-<Race_Killer: 獣, 20)> のタグを３つついた状態（例えばアクター、スキル、武器）だと、<br>
-獣種族に与えるダメージは+60%となります。
+For example, assume the subject has **three <Race_Killer: Beast, 20)> tags** (i.e. actor, its skill, an its weapon),<br>
+The total damage increase to Beast is **60%**(20+20+20). <br>
 
-## 3. 実装（競合）情報<br>
-上書き定義なし<br>
 
-- **BattleManager.startAction** より処理派生<br>
--- 特効・耐性タグ読み取り<br>
+## 3. Implementation (Information for Possible Conflict to other plugins)<br>
+No overwritten functions.<br>
 
-- **Game_Action.prototype.executeDamage** より処理派生<br>
--- SoR_ComboCounter.js (2020/06/12時点非公開)より下<br>
+- Branched from **BattleManager.startAction**<br>
+-- To process tags for equipments/skills effeciency<br>
 
-- **DataManager.isDatabaseLoaded**  より処理派生<br>
--- タグ読み取り用<br>
+- Branched from **Game_Action.prototype.executeDamage**<br>
+-- Put this below SoR_ComboCounter.js (currently not released)<br>
 
-- **Game_Enemy.prototype.setup** および **Game_Actor.prototype.setup** より処理派生<br>
--- 種族定義用<br>
+- Branched from **DataManager.isDatabaseLoaded**<br>
+-- To read tags for races<br>
+
+- Branched from **Game_Enemy.prototype.setup** and **Game_Actor.prototype.setup**<br>
+-- Definition of races <br>
 
 
 ### Version info.

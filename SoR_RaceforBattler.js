@@ -3,7 +3,7 @@
 // MIT License (C) 2020 蒼竜 @soryu_rpmaker
 // http://opensource.org/licenses/mit-license.php
 // ----------------------------------------------------------------------------
-// Latest version v1.00 (2020/0X/XX)
+// Latest version v1.00 (2020/06/13)
 //=============================================================================
 
 /*:ja
@@ -39,6 +39,11 @@
  * -----------------------------------------------------------
  * v1.00 (2020/06/13)       公開  
  *
+ *
+ * @param Minimum Damage
+ * @type value
+ * @default 1
+ * @desc 種族耐性によるダメージの最小値("種族耐性による"最終ダメージがこの値未満になりません)
  *
  * @param Effective Rate
  * @type value
@@ -159,6 +164,10 @@
  * ------------------------------------------------------------
  * v1.00 (Jun 13, 2020)       Released!
  *
+ * @param Minimum Damage
+ * @type value
+ * @default 1
+ * @desc Lower Damage cap for specific race's resitance 
  *
  * @param Effective Rate
  * @type value
@@ -254,8 +263,9 @@ var SoR = SoR || {};
 	
 var Parameters = PluginManager.parameters('SoR_RaceforBattler');
 var Race_name = [];
-
+var Race_lowerDamageCap = parseInt(PluginManager.parameters['Minimum Damage'] || 1);
 var Race_Killer_Rate = parseInt(PluginManager.parameters['Effective Rate'] || 100);
+
 Race_name[0] = undefined;
 Race_name[1] = String(Parameters['Race1'] || '');
 Race_name[2] = String(Parameters['Race2'] || '');
@@ -320,9 +330,10 @@ DataManager.isDatabaseLoaded = function() {
 
 var SoR_RFB_GA_executeDamage = Game_Action.prototype.executeDamage
 Game_Action.prototype.executeDamage = function(target, value) {
+	// If damage=0 after correction by Element rate, race efficiency is ignored.
 	if(value > 0 && target.isKiller && !target.complete_resist ){
 		value = Math.floor(value*(1.00+target.KillerRate/100));
-		if(value <=0) value = 1;
+		if(value < Race_lowerDamageCap) value = Race_lowerDamageCap; // Be damage >=1 in default
 	}
 	SoR_RFB_GA_executeDamage.call(this,target, value);
 };
@@ -414,30 +425,30 @@ function ComputeKillerEffect(sub,act,tar){
 		if(tar[j].isActor()){// decrease effect by equipments
 			//actor&subject
 			if(tar[j]._killer_Race && tar[j]._killer_resists.length > 0){
-			  for(var i=0; i<tar[j]._killer_resists; i++){
+			   for(var i=0; i<tar[j]._killer_resists; i++){
 				  
 				  var res = tar[j]._killer_resists[i];
 				  if(res.complete_resist){
-					tar[j].complete_resist = true;
-					break;
+					 tar[j].complete_resist = true;
+					 break;
 				  }
 				  if(res.Race == sub._race){
-					tar[j].isKiller = true;
-					tar[j].KillerRate -= res.rate;							   
+					 tar[j].isKiller = true;
+					 tar[j].KillerRate -= res.rate;							   
 				  }
-			  }
+			   }
 			}
 			if($dataClasses[tar[j]._classId]._killer_resists && $dataClasses[tar[j]._classId]._killer_resists.length > 0){
 			 for(var i=0; i< $dataClasses[tar[j]._classId]._killer_resists; i++){
 
 			   	  var res = $dataClasses[tar[j]._classId]._killer_resists[i];
 				  if(res.complete_resist){
-					tar[j].complete_resist = true;
-					break;
+					 tar[j].complete_resist = true;
+					 break;
 				  }
 				  if(res.Race == sub._race){
-					tar[j].isKiller = true;
-					tar[j].KillerRate -= res.rate;							   
+					 tar[j].isKiller = true;
+					 tar[j].KillerRate -= res.rate;							   
 				  }
 			 }
 			  
@@ -480,17 +491,12 @@ function ComputeKillerEffect(sub,act,tar){
 				
 			}
 
-		}			
+		 }			
 			
-	  }
-	}
-	
+	   }
+	}	
 	
 }
-
-
-
-
 
 
 function getRaceTags(DM) {
@@ -510,11 +516,6 @@ function getRaceTags(DM) {
       }	  
    }
 }
-
-
-
-
-
 					
 					
 
@@ -579,8 +580,9 @@ function getRace_KillerResistTags(DM) {
    }
 }
 
+
 function isValidRaceTag(race){
-	return Race_name.some ( function ( value ) {	return value === race;	});
+	return Race_name.some ( function ( value ) { return value === race; });
 }
 
 }());

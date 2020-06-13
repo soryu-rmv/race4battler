@@ -26,13 +26,13 @@ Currently, you can define 16 races at maximum.<br>
 
 
 
-### 2.2. Database settings（Races for Actors/Enemies and Skills）
+### 2.2. Database settings（Races for Actors/Enemies, classes and Skills）
 Note that since this plugin adds a new property (races) for every actor (and enemies),<br> 
 you have to initialize the game (Start as NewGame) to work properly.<br>
 
 #### 2.2.1 Race settings
 
-To assign races for battlers (actors and enemies),<br>
+To assign races for battlers (actors and enemies) or classes,<br>
 put following tags into the note for the specific battler.<br>
  
  ```<Race: RACENAME>```<br>
@@ -52,7 +52,7 @@ put following tags into the note for the specific skills or equipments.<br>
   If <Race_Killer: Beast, 50>, the damage for beasts are increased by 50%. <br>
 
 - When you just write <Race_Killer: RACENAME>, the default percentage ("Effective Rate" in a plugin parameters).<br>
-  This tag also can be used for battlers who always have advantage for specific races.
+  This tag also can be used for battlers/classes for actors who always have advantage for specific races.
  
  
  

@@ -37,8 +37,8 @@ put following tags into the note for the specific battler.<br>
  
  ```<Race: RACENAME>```<br>
 
-RACENAME must be **a name defined in 2.1. (plugin parameters settings)**.<br>
-If the RACENAME is not appropriate, that tag is **ignored**.<br>
+*RACENAME* must be **a name defined in 2.1. (plugin parameters settings)**.<br>
+If the *RACENAME* is not appropriate, that tag is **ignored**.<br>
 
  
 #### 2.2.2 Effective settings

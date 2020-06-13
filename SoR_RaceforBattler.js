@@ -17,15 +17,14 @@
  * 用法 (プラグイン設定)
  * -----------------------------------------------------------
  * 1. プラグインパラメータで好きな種族名(Race1~Race16)を設定してください。(最大16)
- * 2. バトラー（アクターやエネミー）のメモ欄に種族を定義する次のタグを挿入します。
+ * 2. バトラー（アクターやエネミー）および職業のメモ欄に種族を定義する次のタグを挿入します。
  *    <Race: 種族名>    
  *    ※ 種族名: 1.で定義した種族名(存在しないものを指定すると無視されます)
  * 3. スキルや装備に種族特効をする次のタグを挿入します。
  *    <Race_Killer: 種族名(, 数値)>
- *    ※ 数値（省略可能、タグ内()は省略可能部分を示す意味で "獣(, 30)>" のように入力をするものではありません）は、
- *       ダメージを増幅させる割合(%)を指定してください。
+ *    ※ 数値（省略可能）は、ダメージを増幅させる割合(%)を指定してください。
  *       省略すると、プラグインパラメータ"Effective Rate"の値が採用されます(デフォルト+100%)。
- *    ※ バトラーにも定義可能です。バトラーに定義すれば、常に特定種族に強いバトラーとしてキャラクターを作成できます。
+ *    ※ バトラー・職業にも定義可能です。バトラーに定義すれば、常に特定種族に強いバトラーとしてキャラクターを作成できます。
  * 4. 次のタグを挿入すると、特定種族からのダメージを軽減させることができます。
  *    <Killer_Resist: (種族名, 数値)>
  *    ※ 数値は、ダメージを減少させる割合(%)を指定してください。
@@ -144,10 +143,9 @@
  * 3. Insert the following tag in the note for skills or equipments to define the special effect for specific races.
  *    <Race_Killer: RACENAME(, VALUE)>
  *    + VALUE(omittable) is a rate(%) to increase the damage. 
- *       !!!!warning!!!! (, VALUE) in tag just shows the omittable part. Do not input as "Beast(, 30)>".
  *       If <Race_Killer: Beast, 50>, the damage for beasts are increased by 50%. 
  *       When you just write <Race_Killer: RACENAME>, the default percentage ("Effective Rate" in a plugin parameters).
- *    +  This tag also can be used for battlers who always have advantage for specific races.
+ *    +  This tag also can be used for battlers/classes who always have advantage for specific races.
  * 4. Following tag has a effect to decrease the damage from attakcs of the specific race.
  *    <Killer_Resist: (RACENAME, VALUE)>
  *    + VALUE is a rate(%) to decrease the damage. 
@@ -283,6 +281,7 @@ var SoR_RFB_GA_setup = Game_Actor.prototype.setup;
 Game_Actor.prototype.setup = function(actorId) {
 	SoR_RFB_GA_setup.call(this, actorId);
 	this._race = $dataActors[actorId]._Race;
+	this._killer_Race = $dataActors[actorId]._killer_Race;
 	this.complete_resist = $dataActors[actorId].complete_resist;
 }
 
@@ -290,6 +289,7 @@ var SoR_RFB_GE_setup = Game_Enemy.prototype.setup;
 Game_Enemy.prototype.setup = function(enemyId, x, y) {
 	SoR_RFB_GE_setup.call(this,enemyId, x, y);
 	this._race = $dataEnemies[enemyId]._Race;
+	this._killer_Race = $dataEnemies[enemyId]._killer_Race;
 	this.complete_resist = $dataEnemies[enemyId].complete_resist;
 }
 
@@ -301,10 +301,14 @@ DataManager.isDatabaseLoaded = function() {
 	if(!SoR.RaceforBattler_isLoaded){		
       getRaceTags($dataActors);
       getRaceTags($dataEnemies);
+	  getRaceTags($dataClasses);
+      getRace_KillerTags($dataActors);
+	  getRace_KillerTags($dataClasses);
       getRace_KillerTags($dataWeapons);
       getRace_KillerTags($dataArmors);
       getRace_KillerTags($dataSkills);
       getRace_KillerResistTags($dataActors);
+      getRace_KillerResistTags($dataClasses);
       getRace_KillerResistTags($dataEnemies);
       getRace_KillerResistTags($dataWeapons);
       getRace_KillerResistTags($dataArmors);
@@ -316,7 +320,7 @@ DataManager.isDatabaseLoaded = function() {
 
 var SoR_RFB_GA_executeDamage = Game_Action.prototype.executeDamage
 Game_Action.prototype.executeDamage = function(target, value) {
-	if(target.isKiller & !target.complete_resist){
+	if(value > 0 && target.isKiller && !target.complete_resist ){
 		value = Math.floor(value*(1.00+target.KillerRate/100));
 		if(value <=0) value = 1;
 	}
@@ -346,13 +350,24 @@ function ComputeKillerEffect(sub,act,tar){
 	if(!act.item()._killer_Race) return;
 	
 	
+	//subject
+	if(sub._killer_Race && sub._killer_Race.length > 0){
+	  killer_arr[num] = sub._killer_Race[i];
+	  num++;
+	}
 	//Killer (skill)
 	for(var i=0; i < act.item()._killer_Race.length; i++){
 	  killer_arr[num] = act.item()._killer_Race[i];
 	  num++;
 	}
-	//Killer (weapon&armor)
+	//Killer (actor dependent)
 	if(sub.isActor()){
+		//class
+		if($dataClasses[sub._classId]._killer_Race && $dataClasses[sub._classId]._killer_Race.length > 0){
+	     killer_arr[num] = $dataClasses[sub._classId]._killer_Race[i];
+	     num++;
+	    }	
+		//equipments
 		for(var i=0; i < sub._equips.length; i++){
 			var eq_id = sub._equips[i]._itemId;
 			if(eq_id == 0) continue;
@@ -388,8 +403,7 @@ function ComputeKillerEffect(sub,act,tar){
 						}
 					);
 					
-			  if(isKiller){
-				  
+			  if(isKiller){				  
 				  tar[j].isKiller = true;
 				  tar[j].KillerRate += killer_arr[i].rate;
 			  }
@@ -398,7 +412,37 @@ function ComputeKillerEffect(sub,act,tar){
 			
 			
 		if(tar[j].isActor()){// decrease effect by equipments
+			//actor&subject
+			if(tar[j]._killer_Race && tar[j]._killer_resists.length > 0){
+			  for(var i=0; i<tar[j]._killer_resists; i++){
+				  
+				  var res = tar[j]._killer_resists[i];
+				  if(res.complete_resist){
+					tar[j].complete_resist = true;
+					break;
+				  }
+				  if(res.Race == sub._race){
+					tar[j].isKiller = true;
+					tar[j].KillerRate -= res.rate;							   
+				  }
+			  }
+			}
+			if($dataClasses[tar[j]._classId]._killer_resists && $dataClasses[tar[j]._classId]._killer_resists.length > 0){
+			 for(var i=0; i< $dataClasses[tar[j]._classId]._killer_resists; i++){
 
+			   	  var res = $dataClasses[tar[j]._classId]._killer_resists[i];
+				  if(res.complete_resist){
+					tar[j].complete_resist = true;
+					break;
+				  }
+				  if(res.Race == sub._race){
+					tar[j].isKiller = true;
+					tar[j].KillerRate -= res.rate;							   
+				  }
+			 }
+			  
+			  
+			}
 			for(var i=0; i < tar[j]._equips.length; i++){
 				var eq_id = tar[j]._equips[i]._itemId;
 				if(eq_id == 0) continue;
@@ -438,8 +482,7 @@ function ComputeKillerEffect(sub,act,tar){
 
 		}			
 			
-			
-		}
+	  }
 	}
 	
 	
@@ -464,8 +507,7 @@ function getRaceTags(DM) {
 			  var str = String(RegExp.$1);
 			  if(isValidRaceTag(str)) obj._Race.push(String(RegExp.$1));
 		  }
-      }
-	  
+      }	  
    }
 }
 
@@ -519,8 +561,7 @@ function getRace_KillerResistTags(DM) {
 		    if(!RegExp.$1){
 				obj.complete_resist = true;
 				continue;
-			}
-		  
+			}		  
 		  
 		     var str = String(RegExp.$1);
 			 if(!isValidRaceTag(str)) continue;
@@ -537,8 +578,6 @@ function getRace_KillerResistTags(DM) {
 	  
    }
 }
-
-
 
 function isValidRaceTag(race){
 	return Race_name.some ( function ( value ) {	return value === race;	});

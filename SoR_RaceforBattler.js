@@ -315,6 +315,7 @@ DataManager.isDatabaseLoaded = function() {
       getRaceTags($dataEnemies);
       getRaceTags($dataClasses);
       getRace_KillerTags($dataActors);
+      getRace_KillerTags($dataEnemies);
       getRace_KillerTags($dataClasses);
       getRace_KillerTags($dataWeapons);
       getRace_KillerTags($dataArmors);
@@ -333,7 +334,7 @@ DataManager.isDatabaseLoaded = function() {
 var SoR_RFB_GA_executeDamage = Game_Action.prototype.executeDamage
 Game_Action.prototype.executeDamage = function(target, value) {
 	// If damage=0 after correction by Element rate, race efficiency is ignored.
-    if(value > 0 && target.isKiller && !target.complete_resist ){
+    if(value > 0 && target.isKiller && target.complete_resist == false ){
         value = Math.floor(value*(1.00+target.KillerRate/100));
         if(value < Race_lowerDamageCap) value = Race_lowerDamageCap; // Be damage >=1 in default
 	}
@@ -359,8 +360,10 @@ function ComputeKillerEffect(sub,act,tar){
 	
     var A2E = (sub.isActor() && tar[0].isEnemy());
     var E2A = (sub.isEnemy() && tar[0].isActor());
-    if(!A2E && !E2A) return;
-    if(!act.item()._killer_Race) return;
+    if(!(A2E || E2A)) return;
+    //if(!act.item()._killer_Race) return;
+	
+	
 	
     //subject
     if(sub._killer_Race){
@@ -406,9 +409,15 @@ function ComputeKillerEffect(sub,act,tar){
 	}
 	
 	
-	
+	console.log(killer_arr)
 	
 	for(var j=0; j < tar.length; j++){
+
+        //complete resist for a target
+		 if(tar[j].complete_resist){
+			break;
+		 }
+
 	//judge killer
 		if (killer_arr.length>0 && tar[j]._race.length>0) {
 			for(var i=0; i<killer_arr.length; i++){
@@ -425,17 +434,15 @@ function ComputeKillerEffect(sub,act,tar){
 			  
 			}
 			
-			
+
+
 
 		//resistance for actor&subject
 			if(tar[j]._killer_resists && tar[j]._killer_resists.length > 0){
+
 			   for(var i=0; i<tar[j]._killer_resists.length; i++){
 				  
 				  var res = tar[j]._killer_resists[i];
-				  if(res.complete_resist){
-					 tar[j].complete_resist = true;
-					 break;
-				  }
 				  if(res.Race == sub._race){
 					 tar[j].isKiller = true;
 					 tar[j].KillerRate -= res.rate;
@@ -445,13 +452,14 @@ function ComputeKillerEffect(sub,act,tar){
 			
 			if(tar[j].isActor()){// decrease effect by equipments
 			if($dataClasses[tar[j]._classId]._killer_resists && $dataClasses[tar[j]._classId]._killer_resists.length > 0){
+			  if($dataClasses[tar[j]._classId].complete_resist){
+			    tar[j].complete_resist = true;
+			    break;
+			  }
+				
 			 for(var i=0; i< $dataClasses[tar[j]._classId]._killer_resists; i++){
 
 			   	  var res = $dataClasses[tar[j]._classId]._killer_resists[i];
-				  if(res.complete_resist){
-					 tar[j].complete_resist = true;
-					 break;
-				  }
 				  if(res.Race == sub._race){
 					 tar[j].isKiller = true;
 					 tar[j].KillerRate -= res.rate;							   
@@ -568,7 +576,7 @@ function getRace_KillerResistTags(DM) {
 		    if(!RegExp.$1){
 				obj.complete_resist = true;
 				continue;
-			}		  
+			}
 		  
 		     var str = String(RegExp.$1);
 			 if(!isValidRaceTag(str)) continue;

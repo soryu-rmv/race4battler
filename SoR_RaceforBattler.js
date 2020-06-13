@@ -261,28 +261,30 @@ var SoR = SoR || {};
 
 (function() {
 	
-var Parameters = PluginManager.parameters('SoR_RaceforBattler');
+var Param = PluginManager.parameters('SoR_RaceforBattler');
 var Race_name = [];
-var Race_lowerDamageCap = parseInt(PluginManager.parameters['Minimum Damage'] || 1);
-var Race_Killer_Rate = parseInt(PluginManager.parameters['Effective Rate'] || 100);
+var Race_lowerDamageCap = Number(Param['Minimum Damage'] || 1);
+var Race_Killer_Rate = Number(Param['Effective Rate'] || 100);
+
+console.log(Race_Killer_Rate)
 
 Race_name[0] = undefined;
-Race_name[1] = String(Parameters['Race1'] || '');
-Race_name[2] = String(Parameters['Race2'] || '');
-Race_name[3] = String(Parameters['Race3'] || '');
-Race_name[4] = String(Parameters['Race4'] || '');
-Race_name[5] = String(Parameters['Race5'] || '');
-Race_name[6] = String(Parameters['Race6'] || '');
-Race_name[7] = String(Parameters['Race7'] || '');
-Race_name[8] = String(Parameters['Race8'] || '');
-Race_name[9] = String(Parameters['Race9'] || '');
-Race_name[10] = String(Parameters['Race10'] || '');
-Race_name[11] = String(Parameters['Race11'] || '');
-Race_name[12] = String(Parameters['Race12'] || '');
-Race_name[13] = String(Parameters['Race13'] || '');
-Race_name[14] = String(Parameters['Race14'] || '');
-Race_name[15] = String(Parameters['Race15'] || '');
-Race_name[16] = String(Parameters['Race16'] || '');
+Race_name[1] = String(Param['Race1'] || '');
+Race_name[2] = String(Param['Race2'] || '');
+Race_name[3] = String(Param['Race3'] || '');
+Race_name[4] = String(Param['Race4'] || '');
+Race_name[5] = String(Param['Race5'] || '');
+Race_name[6] = String(Param['Race6'] || '');
+Race_name[7] = String(Param['Race7'] || '');
+Race_name[8] = String(Param['Race8'] || '');
+Race_name[9] = String(Param['Race9'] || '');
+Race_name[10] = String(Param['Race10'] || '');
+Race_name[11] = String(Param['Race11'] || '');
+Race_name[12] = String(Param['Race12'] || '');
+Race_name[13] = String(Param['Race13'] || '');
+Race_name[14] = String(Param['Race14'] || '');
+Race_name[15] = String(Param['Race15'] || '');
+Race_name[16] = String(Param['Race16'] || '');
 
 
 
@@ -292,6 +294,7 @@ Game_Actor.prototype.setup = function(actorId) {
 	SoR_RFB_GA_setup.call(this, actorId);
 	this._race = $dataActors[actorId]._Race;
 	this._killer_Race = $dataActors[actorId]._killer_Race;
+	this._killer_resists = $dataActors[actorId]._killer_resists;
 	this.complete_resist = $dataActors[actorId].complete_resist;
 }
 
@@ -300,6 +303,7 @@ Game_Enemy.prototype.setup = function(enemyId, x, y) {
 	SoR_RFB_GE_setup.call(this,enemyId, x, y);
 	this._race = $dataEnemies[enemyId]._Race;
 	this._killer_Race = $dataEnemies[enemyId]._killer_Race;
+	this._killer_resists = $dataEnemies[enemyId]._killer_resists;
 	this.complete_resist = $dataEnemies[enemyId].complete_resist;
 }
 
@@ -362,9 +366,11 @@ function ComputeKillerEffect(sub,act,tar){
 	
 	
 	//subject
-	if(sub._killer_Race && sub._killer_Race.length > 0){
-	  killer_arr[num] = sub._killer_Race[i];
-	  num++;
+	if(sub._killer_Race){
+          for(var i=0; i < sub._killer_Race.length; i++){
+	    killer_arr[num] = sub._killer_Race[i];
+	    num++;
+          }
 	}
 	//Killer (skill)
 	for(var i=0; i < act.item()._killer_Race.length; i++){
@@ -404,6 +410,7 @@ function ComputeKillerEffect(sub,act,tar){
 	
 	
 	
+	
 	for(var j=0; j < tar.length; j++){
 	//judge killer
 		if (killer_arr.length>0 && tar[j]._race.length>0) {
@@ -422,10 +429,11 @@ function ComputeKillerEffect(sub,act,tar){
 			}
 			
 			
-		if(tar[j].isActor()){// decrease effect by equipments
-			//actor&subject
-			if(tar[j]._killer_Race && tar[j]._killer_resists.length > 0){
-			   for(var i=0; i<tar[j]._killer_resists; i++){
+		console.log(tar[j]._killer_resists)
+
+		//resistance for actor&subject
+			if(tar[j]._killer_resists && tar[j]._killer_resists.length > 0){
+			   for(var i=0; i<tar[j]._killer_resists.length; i++){
 				  
 				  var res = tar[j]._killer_resists[i];
 				  if(res.complete_resist){
@@ -434,10 +442,13 @@ function ComputeKillerEffect(sub,act,tar){
 				  }
 				  if(res.Race == sub._race){
 					 tar[j].isKiller = true;
-					 tar[j].KillerRate -= res.rate;							   
+					 tar[j].KillerRate -= res.rate;					
+						console.log(tar[j].KillerRate)
 				  }
 			   }
 			}
+			
+			if(tar[j].isActor()){// decrease effect by equipments
 			if($dataClasses[tar[j]._classId]._killer_resists && $dataClasses[tar[j]._classId]._killer_resists.length > 0){
 			 for(var i=0; i< $dataClasses[tar[j]._classId]._killer_resists; i++){
 

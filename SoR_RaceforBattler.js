@@ -315,9 +315,9 @@ DataManager.isDatabaseLoaded = function() {
 	if(!SoR.RaceforBattler_isLoaded){		
       getRaceTags($dataActors);
       getRaceTags($dataEnemies);
-	  getRaceTags($dataClasses);
+      getRaceTags($dataClasses);
       getRace_KillerTags($dataActors);
-	  getRace_KillerTags($dataClasses);
+      getRace_KillerTags($dataClasses);
       getRace_KillerTags($dataWeapons);
       getRace_KillerTags($dataArmors);
       getRace_KillerTags($dataSkills);
@@ -326,7 +326,7 @@ DataManager.isDatabaseLoaded = function() {
       getRace_KillerResistTags($dataEnemies);
       getRace_KillerResistTags($dataWeapons);
       getRace_KillerResistTags($dataArmors);
-	  SoR.RaceforBattler_isLoaded = true;
+      SoR.RaceforBattler_isLoaded = true;
 	}
     return true;
 }
@@ -335,54 +335,53 @@ DataManager.isDatabaseLoaded = function() {
 var SoR_RFB_GA_executeDamage = Game_Action.prototype.executeDamage
 Game_Action.prototype.executeDamage = function(target, value) {
 	// If damage=0 after correction by Element rate, race efficiency is ignored.
-	if(value > 0 && target.isKiller && !target.complete_resist ){
-		value = Math.floor(value*(1.00+target.KillerRate/100));
-		if(value < Race_lowerDamageCap) value = Race_lowerDamageCap; // Be damage >=1 in default
+    if(value > 0 && target.isKiller && !target.complete_resist ){
+        value = Math.floor(value*(1.00+target.KillerRate/100));
+        if(value < Race_lowerDamageCap) value = Race_lowerDamageCap; // Be damage >=1 in default
 	}
-	SoR_RFB_GA_executeDamage.call(this,target, value);
+    SoR_RFB_GA_executeDamage.call(this,target, value);
 };
 
 
 var SoR_RFB_BM_startAction = BattleManager.startAction;
 BattleManager.startAction = function() {
-	SoR_RFB_BM_startAction.call(this);
-	this._action.Race_effect = ComputeKillerEffect(this._subject, this._action, this._targets);
+    SoR_RFB_BM_startAction.call(this);
+    this._action.Race_effect = ComputeKillerEffect(this._subject, this._action, this._targets);
 }
 
 
 function ComputeKillerEffect(sub,act,tar){
-	if(tar[0] == undefined) return;
-	for(var i=0;i < tar.length; i++){
-		tar[i].isKiller = false;
-		tar[i].KillerRate = 0;
-	}
-	var killer_arr = [];
-	var num = 0;
+    if(tar[0] == undefined) return;
+    for(var i=0;i < tar.length; i++){
+      tar[i].isKiller = false;
+      tar[i].KillerRate = 0;
+    }
+    var killer_arr = [];
+    var num = 0;
 	
-	var A2E = (sub.isActor() && tar[0].isEnemy());
+    var A2E = (sub.isActor() && tar[0].isEnemy());
     var E2A = (sub.isEnemy() && tar[0].isActor());
-	if(!A2E && !E2A) return;
-	if(!act.item()._killer_Race) return;
+    if(!A2E && !E2A) return;
+    if(!act.item()._killer_Race) return;
 	
-	
-	//subject
-	if(sub._killer_Race){
-          for(var i=0; i < sub._killer_Race.length; i++){
-	    killer_arr[num] = sub._killer_Race[i];
-	    num++;
-          }
-	}
+    //subject
+    if(sub._killer_Race){
+        for(var i=0; i < sub._killer_Race.length; i++){
+	       killer_arr[num] = sub._killer_Race[i];
+	       num++;
+        }
+    }
 	//Killer (skill)
-	for(var i=0; i < act.item()._killer_Race.length; i++){
+    for(var i=0; i < act.item()._killer_Race.length; i++){
 	  killer_arr[num] = act.item()._killer_Race[i];
 	  num++;
-	}
+    }
 	//Killer (actor dependent)
 	if(sub.isActor()){
 		//class
 		if($dataClasses[sub._classId]._killer_Race && $dataClasses[sub._classId]._killer_Race.length > 0){
-	     killer_arr[num] = $dataClasses[sub._classId]._killer_Race[i];
-	     num++;
+	       killer_arr[num] = $dataClasses[sub._classId]._killer_Race[i];
+	       num++;
 	    }	
 		//equipments
 		for(var i=0; i < sub._equips.length; i++){
@@ -429,7 +428,6 @@ function ComputeKillerEffect(sub,act,tar){
 			}
 			
 			
-		console.log(tar[j]._killer_resists)
 
 		//resistance for actor&subject
 			if(tar[j]._killer_resists && tar[j]._killer_resists.length > 0){
@@ -442,8 +440,7 @@ function ComputeKillerEffect(sub,act,tar){
 				  }
 				  if(res.Race == sub._race){
 					 tar[j].isKiller = true;
-					 tar[j].KillerRate -= res.rate;					
-						console.log(tar[j].KillerRate)
+					 tar[j].KillerRate -= res.rate;
 				  }
 			   }
 			}

@@ -310,7 +310,7 @@ SoR_RFB_DM_isDatabaseLoaded = DataManager.isDatabaseLoaded;
 DataManager.isDatabaseLoaded = function() {
 	if(!SoR_RFB_DM_isDatabaseLoaded.call(this)) return false;
 	
-	if(!SoR.RaceforBattler_isLoaded){		
+    if(!SoR.RaceforBattler_isLoaded){		
       getRaceTags($dataActors);
       getRaceTags($dataEnemies);
       getRaceTags($dataClasses);
@@ -326,7 +326,7 @@ DataManager.isDatabaseLoaded = function() {
       getRace_KillerResistTags($dataWeapons);
       getRace_KillerResistTags($dataArmors);
       SoR.RaceforBattler_isLoaded = true;
-	}
+    }
     return true;
 }
 
@@ -360,9 +360,7 @@ function ComputeKillerEffect(sub,act,tar){
 	
     var A2E = (sub.isActor() && tar[0].isEnemy());
     var E2A = (sub.isEnemy() && tar[0].isActor());
-    if(!(A2E || E2A)) return;
-    //if(!act.item()._killer_Race) return;
-	
+    if(!(A2E || E2A)) return;	
 	
 	
     //subject
@@ -409,8 +407,6 @@ function ComputeKillerEffect(sub,act,tar){
 	}
 	
 	
-	console.log(killer_arr)
-	
 	for(var j=0; j < tar.length; j++){
 
         //complete resist for a target
@@ -435,13 +431,10 @@ function ComputeKillerEffect(sub,act,tar){
 			}
 			
 
-
-
 		//resistance for actor&subject
 			if(tar[j]._killer_resists && tar[j]._killer_resists.length > 0){
 
-			   for(var i=0; i<tar[j]._killer_resists.length; i++){
-				  
+			   for(var i=0; i<tar[j]._killer_resists.length; i++){				  
 				  var res = tar[j]._killer_resists[i];
 				  if(res.Race == sub._race){
 					 tar[j].isKiller = true;
@@ -465,9 +458,9 @@ function ComputeKillerEffect(sub,act,tar){
 					 tar[j].KillerRate -= res.rate;							   
 				  }
 			 }
-			  
-			  
+			  			  
 			}
+			
 			for(var i=0; i < tar[j]._equips.length; i++){
 				var eq_id = tar[j]._equips[i]._itemId;
 				if(eq_id == 0) continue;

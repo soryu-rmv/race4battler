@@ -266,8 +266,6 @@ var Race_name = [];
 var Race_lowerDamageCap = Number(Param['Minimum Damage'] || 1);
 var Race_Killer_Rate = Number(Param['Effective Rate'] || 100);
 
-console.log(Race_Killer_Rate)
-
 Race_name[0] = undefined;
 Race_name[1] = String(Param['Race1'] || '');
 Race_name[2] = String(Param['Race2'] || '');

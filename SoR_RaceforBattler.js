@@ -3,7 +3,7 @@
 // MIT License (C) 2020 蒼竜 @soryu_rpmaker
 // http://opensource.org/licenses/mit-license.php
 // ----------------------------------------------------------------------------
-// Latest version v1.00 (2020/06/13)
+// Latest version v1.01 (2020/06/23)
 //=============================================================================
 
 /*:ja
@@ -37,6 +37,7 @@
  * -----------------------------------------------------------
  * バージョン情報
  * -----------------------------------------------------------
+ * v1.01 (2020/06/23)       スキル使用時のエラー対策追加  
  * v1.00 (2020/06/13)       公開  
  *
  *
@@ -162,6 +163,7 @@
  * ------------------------------------------------------------
  * Version info
  * ------------------------------------------------------------
+ * v1.01 (Jun 23, 2020)       Bug fix for an error in skills
  * v1.00 (Jun 13, 2020)       Released!
  *
  * @param Minimum Damage
@@ -371,10 +373,12 @@ function ComputeKillerEffect(sub,act,tar){
         }
     }
 	//Killer (skill)
-    for(var i=0; i < act.item()._killer_Race.length; i++){
-	  killer_arr[num] = act.item()._killer_Race[i];
-	  num++;
-    }
+	if(act.item()._killer_Race){
+		for(var i=0; i < act.item()._killer_Race.length; i++){
+		  killer_arr[num] = act.item()._killer_Race[i];
+		  num++;
+		}
+	}
 	//Killer (actor dependent)
 	if(sub.isActor()){
 		//class

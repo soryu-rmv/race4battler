@@ -129,4 +129,5 @@ No overwritten functions.<br>
 
 
 ### Version info.
+ - ver 1.01  (Jun 23, 2020)   Bug fix for an error in skills
  - ver 1.00  (Jun 13, 2020)   Released!

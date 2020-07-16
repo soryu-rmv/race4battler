@@ -31,7 +31,7 @@
  *    ※ 単に<Killer_Resist>と書くと、受ける特効効果を無効化できます（特効を無効化する装備品など）。
  * 
  * 詳細な用例は
- * https://github.com/soryu-rmv/tech_menus
+ * http://dragonflare.dip.jp/dcave/
  * に記載しています。
  *
  * -----------------------------------------------------------
@@ -158,7 +158,7 @@
  *    + Just write <Killer_Resist> to disable all special damage dealt.
  *      (No weapon/skill efficiency effects from opponents are applied.) 
  * 
- * To get more instructions, see https://github.com/soryu-rmv/tech_menus .
+ * To get more instructions, see http://dragonflare.dip.jp/dcave/ .
  *
  * ------------------------------------------------------------
  * Version info
